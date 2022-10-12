@@ -1,0 +1,372 @@
+﻿/****** Object:  Database [RGDBRetail]    Script Date: 11/10/2022 12:09:16 p. m. ******/
+CREATE DATABASE [RGDBRetail]  (EDITION = 'Standard', SERVICE_OBJECTIVE = 'S0', MAXSIZE = 250 GB) WITH CATALOG_COLLATION = SQL_Latin1_General_CP1_CI_AS, LEDGER = OFF;
+GO
+ALTER DATABASE [RGDBRetail] SET COMPATIBILITY_LEVEL = 150
+GO
+ALTER DATABASE [RGDBRetail] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [RGDBRetail] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [RGDBRetail] SET ALLOW_SNAPSHOT_ISOLATION ON 
+GO
+ALTER DATABASE [RGDBRetail] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [RGDBRetail] SET READ_COMMITTED_SNAPSHOT ON 
+GO
+ALTER DATABASE [RGDBRetail] SET  MULTI_USER 
+GO
+ALTER DATABASE [RGDBRetail] SET ENCRYPTION ON
+GO
+ALTER DATABASE [RGDBRetail] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [RGDBRetail] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 100, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+/*** The scripts of database scoped configurations in Azure should be executed inside the target database connection. ***/
+GO
+-- ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 8;
+GO
+/****** Object:  Schema [Account]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+CREATE SCHEMA [Account]
+GO
+/****** Object:  Schema [Clientes]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+CREATE SCHEMA [Clientes]
+GO
+/****** Object:  Schema [Facturas]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+CREATE SCHEMA [Facturas]
+GO
+/****** Object:  Schema [Inventarios]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+CREATE SCHEMA [Inventarios]
+GO
+/****** Object:  Schema [Pedidos]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+CREATE SCHEMA [Pedidos]
+GO
+/****** Object:  Schema [Productos]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+CREATE SCHEMA [Productos]
+GO
+/****** Object:  Schema [Proveedores]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+CREATE SCHEMA [Proveedores]
+GO
+/****** Object:  Table [dbo].[Movimientos]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Movimientos](
+	[IdMovimiento] [int] IDENTITY(1,1) NOT NULL,
+	[IdEmpleado] [int] NULL,
+	[Anio] [int] NULL,
+	[Mes] [int] NULL,
+	[CantidadEntregas] [int] NULL,
+	[TotalMensualBruto] [money] NULL,
+	[TotalVales] [money] NULL,
+	[TotalISR] [money] NULL,
+	[TotalISRExtra] [money] NULL,
+	[TotalNeto] [money] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdMovimiento] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TbEmpleados]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TbEmpleados](
+	[IdEmpleado] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](100) NULL,
+	[NumeroEmpleado] [varchar](10) NULL,
+	[IdRol] [int] NULL,
+	[FechaAlta] [date] NULL,
+	[FechaModificacion] [date] NULL,
+	[Estatus] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdEmpleado] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TbTabuladorBonos]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TbTabuladorBonos](
+	[IdBonos] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](20) NULL,
+	[Monto] [money] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdBonos] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TbTabuladorJornada]    Script Date: 11/10/2022 12:09:17 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TbTabuladorJornada](
+	[IdJornada] [int] IDENTITY(1,1) NOT NULL,
+	[IdRol] [int] NULL,
+	[Descripcion] [varchar](20) NULL,
+	[SueldoBase] [money] NULL,
+	[JornadaLaboral] [int] NULL,
+	[DiasLaborablesSem] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdJornada] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Movimientos] ON 
+
+INSERT [dbo].[Movimientos] ([IdMovimiento], [IdEmpleado], [Anio], [Mes], [CantidadEntregas], [TotalMensualBruto], [TotalVales], [TotalISR], [TotalISRExtra], [TotalNeto]) VALUES (1, 1, 2022, 10, 100, 8180.0000, 327.2000, 736.2000, 0.0000, 7443.8000)
+SET IDENTITY_INSERT [dbo].[Movimientos] OFF
+GO
+SET IDENTITY_INSERT [dbo].[TbEmpleados] ON 
+
+INSERT [dbo].[TbEmpleados] ([IdEmpleado], [Nombre], [NumeroEmpleado], [IdRol], [FechaAlta], [FechaModificacion], [Estatus]) VALUES (1, N'ALDO ', N'5057498', 1, CAST(N'2022-10-09' AS Date), CAST(N'2022-10-10' AS Date), 1)
+INSERT [dbo].[TbEmpleados] ([IdEmpleado], [Nombre], [NumeroEmpleado], [IdRol], [FechaAlta], [FechaModificacion], [Estatus]) VALUES (2, N'Leonel RR', N'500006', 2, CAST(N'2022-10-10' AS Date), CAST(N'2022-10-10' AS Date), 0)
+INSERT [dbo].[TbEmpleados] ([IdEmpleado], [Nombre], [NumeroEmpleado], [IdRol], [FechaAlta], [FechaModificacion], [Estatus]) VALUES (3, N'JOEL', N'50505', 2, CAST(N'2022-10-10' AS Date), CAST(N'2022-10-10' AS Date), 0)
+INSERT [dbo].[TbEmpleados] ([IdEmpleado], [Nombre], [NumeroEmpleado], [IdRol], [FechaAlta], [FechaModificacion], [Estatus]) VALUES (4, N'Jesus Amador', N'1010222', 1, CAST(N'2022-10-10' AS Date), CAST(N'2022-10-10' AS Date), 1)
+SET IDENTITY_INSERT [dbo].[TbEmpleados] OFF
+GO
+SET IDENTITY_INSERT [dbo].[TbTabuladorBonos] ON 
+
+INSERT [dbo].[TbTabuladorBonos] ([IdBonos], [Descripcion], [Monto]) VALUES (1, N'BonoXEntrega', 5.0000)
+INSERT [dbo].[TbTabuladorBonos] ([IdBonos], [Descripcion], [Monto]) VALUES (2, N'BonoHoraChofer', 10.0000)
+INSERT [dbo].[TbTabuladorBonos] ([IdBonos], [Descripcion], [Monto]) VALUES (3, N'BonoHoraCargador', 5.0000)
+SET IDENTITY_INSERT [dbo].[TbTabuladorBonos] OFF
+GO
+SET IDENTITY_INSERT [dbo].[TbTabuladorJornada] ON 
+
+INSERT [dbo].[TbTabuladorJornada] ([IdJornada], [IdRol], [Descripcion], [SueldoBase], [JornadaLaboral], [DiasLaborablesSem]) VALUES (1, 1, N'Chofer', 30.0000, 8, 6)
+INSERT [dbo].[TbTabuladorJornada] ([IdJornada], [IdRol], [Descripcion], [SueldoBase], [JornadaLaboral], [DiasLaborablesSem]) VALUES (2, 2, N'Cargador', 30.0000, 8, 6)
+INSERT [dbo].[TbTabuladorJornada] ([IdJornada], [IdRol], [Descripcion], [SueldoBase], [JornadaLaboral], [DiasLaborablesSem]) VALUES (3, 3, N'Auxiliar', 30.0000, 8, 6)
+SET IDENTITY_INSERT [dbo].[TbTabuladorJornada] OFF
+GO
+/****** Object:  StoredProcedure [dbo].[CalcularEmpleadoMovmientoMes]    Script Date: 11/10/2022 12:09:18 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[CalcularEmpleadoMovmientoMes]
+@IdEmpleado INT,
+@Mes INT,
+@CantidadEntregas INT 
+AS
+BEGIN
+    DECLARE @IdRolEmpleado INT,@RolEmpleado VARCHAR(12)
+    SELECT @IdRolEmpleado=IdRol,
+            @RolEmpleado = CASE WHEN IdRol = 1 THEN 'Chofer' WHEN IdRol=2 THEN 'Cargador' WHEN IdRol=3 THEN 'Auxiliar' END
+        FROM TbEmpleados
+        WHERE IdEmpleado=@IdEmpleado
+
+    
+    DECLARE @SueldoBaseMensualHora Money,@HorasPorJornada INT,@DiasLaborablesXSemana INT,@SemanasLaborablesXMes INT
+    
+    SELECT @SueldoBaseMensualHora=SueldoBase ,
+            @HorasPorJornada=JornadaLaboral,
+            @DiasLaborablesXSemana=DiasLaborablesSem,
+            @SemanasLaborablesXMes = 4
+        From TbTabuladorJornada
+    WHERE IdRol=@IdRolEmpleado
+
+
+    DECLARE @BonoXEntregas Money = 0 ,@BonoPorHoras Money = 0
+    
+    Select @BonoXEntregas = Monto * @CantidadEntregas
+        From TbTabuladorBonos
+        WHERE Descripcion='BonoXEntrega'
+    
+    IF @RolEmpleado = 'Chofer'
+    BEGIN
+        Select @BonoPorHoras = Monto * ((@HorasPorJornada * @DiasLaborablesXSemana)* @SemanasLaborablesXMes)
+        From TbTabuladorBonos
+        WHERE Descripcion = 'BonoHoraChofer'
+    END
+
+    IF @RolEmpleado = 'Cargador'
+    BEGIN
+        Select @BonoPorHoras = Monto * ((@HorasPorJornada * @DiasLaborablesXSemana)* @SemanasLaborablesXMes)
+        From TbTabuladorBonos
+        WHERE Descripcion = 'BonoHoraCargador'
+    END
+
+    DECLARE @SueldoBaseMensual Money,@DescuentoBaseISR Money, @DescuentoIsrExtra Money=0,@TotalValesDespensa Money,@TotalNETO Money
+        SET @SueldoBaseMensual = (((@SueldoBaseMensualHora * @HorasPorJornada)*@DiasLaborablesXSemana) * @SemanasLaborablesXMes)+@BonoXEntregas+@BonoPorHoras
+        SET @DescuentoBaseISR = (@SueldoBaseMensual / 100)*9
+        SET @TotalValesDespensa = (@SueldoBaseMensual / 100)*4
+    
+    IF @SueldoBaseMensual > 10000
+    BEGIN
+        SET @DescuentoIsrExtra = (@SueldoBaseMensual / 100)*3
+    END
+        SET @TotalNETO = (@SueldoBaseMensual - @DescuentoBaseISR)- @DescuentoIsrExtra
+
+    INSERT INTO Movimientos(IdEmpleado,Anio,Mes,CantidadEntregas,TotalMensualBruto,TotalVales,TotalISR,TotalISRExtra,TotalNeto)
+        VALUES(@IdEmpleado,YEAR(GETDATE()),@Mes,@CantidadEntregas,@SueldoBaseMensual,@TotalValesDespensa,@DescuentoBaseISR,@DescuentoIsrExtra,@TotalNETO)
+
+
+    
+
+    SELECT SCOPE_IDENTITY() AS IdMovimiento,
+            @SueldoBaseMensual AS TotalMensualBruto ,
+            @TotalValesDespensa AS TotalValesDespensa,
+            @DescuentoBaseISR As  TotalISR ,
+            @DescuentoIsrExtra AS TotalISRExtra,
+            @TotalNETO AS TotalNETO       
+
+    --select * from Movimientos
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_ActualizarEmpleado]    Script Date: 11/10/2022 12:09:18 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[SP_ActualizarEmpleado]
+@IdEmpleado INT,
+@Nombre VARCHAR(100),
+@NumeroEmpleado VARCHAR(10),
+@IdRol INT
+as 
+BEGIN
+    UPDATE TbEmpleados SET Nombre=@Nombre, NumeroEmpleado=@NumeroEmpleado, IdRol=@IdRol, FechaModificacion = GETDATE()
+    WHERE IdEmpleado = @IdEmpleado;
+
+    SELECT IdEmpleado,
+           Nombre,
+           NumeroEmpleado,
+           IdRol
+    FROM  TbEmpleados
+    WHERE
+      IdEmpleado = @IdEmpleado;
+
+      --EXEC SP_ActualizarEmpleado 1,'ALDO LEONEL','5057498',2
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_EliminarEmpleado]    Script Date: 11/10/2022 12:09:18 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[SP_EliminarEmpleado]
+@IdEmpleado INT
+as 
+BEGIN
+    UPDATE TbEmpleados SET Estatus = 0
+    WHERE IdEmpleado=@IdEmpleado
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_InsertarEmpleado]    Script Date: 11/10/2022 12:09:18 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[SP_InsertarEmpleado]
+@Nombre VARCHAR(100),
+@NumeroEmpleado VARCHAR(10),
+@IdRol INT
+as 
+BEGIN
+    IF NOT EXISTS (Select * from TbEmpleados WHERE Nombre=@Nombre)
+    BEGIN
+        INSERT INTO TbEmpleados(Nombre,NumeroEmpleado,IdRol,FechaAlta,FechaModificacion,Estatus)
+        VALUES (@Nombre,@NumeroEmpleado,@IdRol,GETDATE(),GETDATE(),1);
+
+        SELECT SCOPE_IDENTITY() AS IdEmpleado, @Nombre AS Nombre ,@NumeroEmpleado AS NumeroEmpleado,@IdRol As  IdRol    
+    END
+    RETURN 0
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_ListarEmpleados]    Script Date: 11/10/2022 12:09:18 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[SP_ListarEmpleados]
+@IdEmpleado INT = 0,
+@Nombre VARCHAR(100) = ''
+as 
+BEGIN
+--exec SP_ListarEmpleados
+    SELECT IdEmpleado,
+           Nombre,
+           NumeroEmpleado,
+           IdRol
+    FROM  TbEmpleados
+    WHERE
+        Estatus = 1 
+        
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_ListarEmpleadosByID]    Script Date: 11/10/2022 12:09:18 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[SP_ListarEmpleadosByID]
+@IdEmpleado INT 
+as 
+BEGIN
+    SELECT IdEmpleado,
+           Nombre,
+           NumeroEmpleado,
+           IdRol
+    FROM  TbEmpleados
+    WHERE
+      IdEmpleado = @IdEmpleado
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_ListarEmpleadosByNumero]    Script Date: 11/10/2022 12:09:18 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[SP_ListarEmpleadosByNumero]
+@NumeroEmpleado VARCHAR(10)
+as 
+BEGIN
+    SELECT IdEmpleado,
+           Nombre,
+           NumeroEmpleado,
+           IdRol
+    FROM  TbEmpleados
+    WHERE
+      NumeroEmpleado = @NumeroEmpleado
+END
+GO
+ALTER DATABASE [RGDBRetail] SET  READ_WRITE 
+GO

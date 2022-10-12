@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Capturar Movimiento</h2>
+<table class="table table-hover">
+    <tr>
+        <td>
+            Numero de empleado
+        </td>
+        <td>
+            <input id="numeroEmpleado" class="form-control" />
+            <hidden id="IdEmpleado"></hidden>
+        </td>
+        <td>
+            <button type="button" id="btn-buscar-empleado" class="btn btn-default" onclick="BuscarEmpleado()">Buscar Empleado</button>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            Nombre
+        </td>
+        <td>
+            <input id="nombreEmpleado" class="form-control" readonly="readonly" />
+        </td>
+        <td>
+            Rol
+        </td>
+        <td>
+            <input id="rolEmpleado" class="form-control" readonly="readonly" />
+        </td>
+    </tr>
+    <tr>
+        <td>Mes</td>
+        <td>
+            <select class="form-control" id="mesMovimiento">
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+        </td>
+        <td>Cantidad Entregar</td>
+        <td><input id="cantidadMovimiento" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <button id="btn-realizar-calculo" class="btn btn-primary" onclick="Calcular()">Guardar Y calcular</button>
+            <input type="button" class="btn btn-danger" value="Cancelar" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Numero Movimiento :<input id="idmovimiento" class="form-control" readonly="readonly"/>
+        </td>
+        <td>
+            Total Mensual Bruto :<input id="totalmensual" class="form-control" readonly="readonly"/>
+        </td>
+        <td>
+            Total ISR :<input id="totalisr" class="form-control" readonly="readonly" />
+        </td>
+        <td>
+            Total NETO :<input id="totalneto" class="form-control" readonly="readonly" />
+        </td>
+    </tr>
+</table>
+<script>
+    var Path = {
+        BuscarEmpleado : "@Url.Action("BuscarEmpleado", "Movimiento")",
+        RealizaCalculo : "@Url.Action("RealizarCalculo", "Movimiento")",
+    }
+</script>
+@Scripts.Render("~/Scripts/movimientos.js")
+@Scripts.Render("~/bundles/jquery")
